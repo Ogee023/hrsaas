@@ -9,13 +9,15 @@
         <el-tree :data="departs" :props="defaultProps" default-expand-all>
           <!-- 传入内容 插槽内容会循环多次 有多少节点循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据 -->
-          <tree-tools
-            slot-scope="{ data }"
-            :tree-node="data"
-            @addDepts="addDepts"
-            @editDepts="editDepts"
-            @delDepts="getDepartments"
-          />
+          <template v-slot="{ data }">
+            <tree-tools
+              :tree-node="data"
+              @addDepts="addDepts"
+              @editDepts="editDepts"
+              @delDepts="getDepartments"
+            />
+          </template>
+
         </el-tree>
       </el-card>
     </div>

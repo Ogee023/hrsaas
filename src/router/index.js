@@ -64,6 +64,16 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true, // 不显示在左侧菜单中
+    children: [{
+      path: '', // 什么都不写表示默认 的二级路由
+      component: () => import('@/views/import/index')
+    }]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
