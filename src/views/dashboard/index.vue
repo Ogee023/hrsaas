@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <upload-excel />
+    <image-upload />
   </div>
 </template>
 
@@ -19,6 +19,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+img {
+  width: 367px;
+  height: 435px;
+}
 .dashboard {
   &-container {
     margin: 30px;
