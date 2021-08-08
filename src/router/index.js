@@ -72,10 +72,9 @@ export const constantRoutes = [
       path: '', // 什么都不写表示默认 的二级路由
       component: () => import('@/views/import/index')
     }]
-  },
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 动态路由
@@ -94,7 +93,7 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes] // 临时合并所有的路由
+  routes: [...constantRoutes] // 临时合并所有的路由
 })
 
 const router = createRouter() // 实例化路由
