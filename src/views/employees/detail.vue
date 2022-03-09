@@ -83,6 +83,7 @@ export default {
   methods: {
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
+      console.log(this.userInfo)
     },
     saveUser() {
       // 调用方法时 应该校验

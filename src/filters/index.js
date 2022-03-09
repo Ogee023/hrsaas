@@ -338,7 +338,8 @@ export function importFile(file, obj, callback, func) {
       .toUpperCase()
     if (
       suffix === 'XLS' ||
-      suffix === 'XLSX'
+      suffix === 'XLSX' ||
+      suffix === 'XML'
     ) {
       return true
     } else {
@@ -396,4 +397,24 @@ export function getBlob(response) {
 // 图片 blob 流转化为可用 src
 export function imgHandle(obj) {
   return window.URL.createObjectURL(obj)
+}
+
+export function getInteger(e, cb) {
+  console.log(e.target.value)
+  if (e.target.value === '0' || !e.target.value) {
+    e.target.value = ''
+    cb('请输入整数')
+  } else {
+    if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 0].some((item) => item === +e.data)) {
+      e.target.value = ''
+      cb('请输入整数')
+    }
+  }
+}
+
+export function getIntegerPoint(e) {
+  const dotIndex = e.target.value.indexOf('.')
+  if (dotIndex !== -1) {
+    e.target.value = e.target.value.slice(0, dotIndex + 2)
+  }
 }

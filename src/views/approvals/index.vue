@@ -94,27 +94,28 @@ export default {
       this.loading = false
     },
     toDetail(obj) {
+      console.log(obj)
       var name = obj.processName
       switch (name) {
         case '工资':
-          this.$router.push({ path: '/approvals/salaryApproval/' + obj.processId })
+          this.$router.push({ path: '/approvals/salaryApproval/' + obj.processId + '/' + obj.userId })
           break
         case '入职':
-          this.$router.push({ path: '/approvals/enterApproval/' + obj.processId })
+          this.$router.push({ path: '/approvals/enterApproval/' + obj.processId + '/' + obj.userId })
           break
         case '请假':
-          this.$router.push({ path: '/approvals/leaveApproval/' + obj.processId })
+          this.$router.push({ path: '/approvals/leaveApproval/' + obj.processId + '/' + obj.userId })
           break
         case '离职':
-          this.$router.push({ path: '/approvals/quitApproval/' + obj.processId })
+          this.$router.push({ path: '/approvals/quitApproval/' + obj.processId + '/' + obj.userId })
           break
         case '加班':
-          this.$router.push({ path: '/approvals/overtimeApproval/' + obj.processId })
+          this.$router.push({ path: '/approvals/overtimeApproval/' + obj.processId + '/' + obj.userId })
       }
     },
 
     changePage(newPage) {
-      this.page.newPage = newPage
+      this.page.page = newPage
       this.getApprovalList()
     }
   }

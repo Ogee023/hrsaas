@@ -1,20 +1,6 @@
 <template>
   <div class="changeSalary">
-    <div class="infoBox">
-      <div class="logo"><img src="@/assets/common/img.jpeg" alt=""></div>
-      <div class="info">
-        <p>
-          <span class="name">{{ user.username }}</span>
-        </p>
-        <p>
-          <span>部门：</span>
-          {{ user.departmentName }}
-        </p><p>
-          <span>入职时间：</span>
-          {{ user.timeOfEntry | formatDate }}
-        </p>
-      </div>
-    </div>
+    <info-box :rule-form="user" :apply-user-id="userId" />
     <div>
       <el-form :model="ruleForm" label-width="110px" class="demo-ruleForm">
         <el-form-item label="调整基本工资">
@@ -59,9 +45,11 @@
 <script>
 import { getUserDetailById } from '@/api/user'
 import { changeSalary } from '@/api/salarys'
+import infoBox from '@/views/users/components/info-box.vue'
 
 export default {
   name: 'UsersTableIndex',
+  components: { infoBox },
   props: ['userSalary', 'userId'],
 
   data() {
@@ -124,39 +112,6 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import '../../../styles/variables.scss';
   .changeSalary{
-    .infoBox{
-      display: flex;
-      border-bottom: solid 1px #ccc;
-      margin-bottom: 20px;
-      padding: 10px 0 20px 0;
-      img{
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-      }
-      .logo{
-        border:solid 1px #ccc;
-        width: 102px;
-        height: 102px;
-        border-radius: 50%;
-        margin-right: 20px;
-      }
-      .info{
-        p{
-          line-height: 30px;
-          .name{font-size: 16px;}
-          span{
-            font-weight: bold;
-            display: inline-block;
-            margin-right: 0px;
-            margin-left: 10px;
-          }
-        }
-      }
-      .buttones{
-        text-align: center;
-      }
-    }
     .Label{
       margin: 0 20px;
       color:#999;

@@ -13,15 +13,15 @@
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
         <!-- 多语言设置 -->
-        {{ $t('route.'+tag.name) }}
+        {{ tag.title }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
-      <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
-      <li @click="closeAllTags(selectedTag)">{{ $t('tagsView.closeAll') }}</li>
+      <li @click="refreshSelectedTag(selectedTag)">刷新</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li @click="closeOthersTags">关闭其他</li>
+      <li @click="closeAllTags(selectedTag)">关闭所有</li>
     </ul>
   </div>
 </template>
@@ -226,9 +226,9 @@ export default {
         margin-right: 15px;
       }
       &.active {
-        background-color: #409EFF;
+        background-color: #f88a9b;
         color: #fff;
-        border-color: #409EFF;
+        border-color: #f88a9b;
         &::before {
           content: '';
           background: #fff;

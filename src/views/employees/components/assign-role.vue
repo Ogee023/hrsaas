@@ -9,7 +9,7 @@
       </el-checkbox>
     </el-checkbox-group>
     <!-- 定义footer的插槽 -->
-    <el-row slot="footer" type="flex" justify="center">
+    <el-row slot="footer" type="flex" justify="end">
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOK">确定</el-button>
         <el-button size="small" @click="btnCancel">取消</el-button>

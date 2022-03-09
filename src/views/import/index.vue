@@ -1,64 +1,69 @@
 <template>
-  <upload-excel :on-success="success" />
+  <div class="dashboard-container">
+    <div class="app-container">
+      <el-card :style="{minHeight:boxHeight}" class="rInfo">
+        <div>
+          <div class="infoTip">
+            <div v-if="this.$route.query.name === '员工'">
+              <h2 class="text-center">员工导入</h2>
+              <el-alert
+                title="每次导入仅可添加1000名员工，姓名、手机、入职时间、聘用形式为必填项"
+                type="warning"
+                show-icon
+                :closable="false"
+              />
+            </div>
+            <div v-if="this.$route.query.name === '考勤'">
+              <h2 class="text-center">考勤导入</h2>
+              <el-alert
+                title="如果某员工已有打卡记录，最新上传的不覆盖原有数据。可上传多名员工的打卡记录。每名员工可上传多条记录，同考勤日内取员工第一次和最后一次打卡时间。"
+                type="warning"
+                show-icon
+                :closable="false"
+              />
+            </div>
+          </div>
+          <component :is="importCompon" ref="import" :base-data="baseData" />
+        </div>
+      </el-card>
+    </div>
+  </div>
 </template>
 
 <script>
-import { importEmployee } from '@/api/employees'
-
+import { minHeight } from '@/filters/index'
+import importCompon from '@/components/Import/index'
+var _this = null
 export default {
-  methods: {
-    async success({ header, results }) {
-      // header中的数据是中文 result也是中文
-      // 新增的员工的属性是一致的
-      const userRelations = {
-        '入职日期': 'timeOfEntry',
-        '手机号': 'mobile',
-        '姓名': 'username',
-        '转正日期': 'correctionTime',
-        '工号': 'workNumber'
+  name: 'RefortList',
+  components: {
+    importCompon
+  },
+  data() {
+    return {
+      importCompon: 'importCompon',
+      boxHeight: '',
+      baseData: {
+        upUrl: '/api/sys/user/import',
+        fileUrl: 'http://research.itcast.cn/files/saas-hrm/添加员工模板.xlsx'
       }
-      // const arr = []
-      // result.forEach(item => {
-      //   debugger
-      //   const userInfo = {}
-      //   Object.keys(item).forEach(key => {
-      //     // 现在是key中文
-      //     userInfo[userRelations[key]] = item[key] // 将原来中文对应的值 赋值给原来英文对应的值
-      //   })
-      //   arr.push(userInfo)
-      // })
-      const newArr = results.map(item => {
-        const userInfo = {}
-        Object.keys(item).forEach(key => {
-          if (userRelations[key] === 'timeOfEntry' || userRelations[key] === 'correctionTime') {
-            // 后端接口限制了不能是字符串 要求转化时间类型
-            userInfo[userRelations[key]] = new Date(this.formatDate(item[key], '/')) // 只有这个才能进入数据库
-          } else {
-            userInfo[userRelations[key]] = item[key] // 将原来中文对应的值 赋值给原来英文对应的值
-          }
-        })
-        return userInfo
-      })
-      await importEmployee(newArr) // 接收一个数组
-      this.$message.success('导入excel成功')
-      this.$router.back() // 回到上一个页面
-    },
-    // 转化excel的日期格式
-    formatDate(numb, format) {
-      const time = new Date((numb - 1) * 24 * 3600000 + 1)
-      time.setYear(time.getFullYear() - 70)
-      const year = time.getFullYear() + ''
-      const month = time.getMonth() + 1 + ''
-      const date = time.getDate() - 1 + ''
-      if (format && format.length === 1) {
-        return year + format + month + format + date
-      }
-      return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
     }
-  }
+  },
+  // 挂载结束
+  mounted: function() {},
+  // 创建完毕状态
+  created: function() {
+    _this = this
+    this.boxHeight = minHeight() // 右边内容高度
+  },
+  // 组件更新
+  updated: function() {},
+  methods: {}
 }
 </script>
 
-<style>
-
+<style rel="stylesheet/scss" lang="scss" scoped>
+.text-center {
+  text-align: center;
+}
 </style>

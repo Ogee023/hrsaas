@@ -1,5 +1,6 @@
 // base color
-$blue: #409EFF;
+// $blue: #409EFF;
+$blue:#324157;
 
 $light-blue:#3A71A8;
 $red:#C03639;
@@ -12,14 +13,12 @@ $panGreen: #30B08F;
 $green1: #44b549;
 
 // sidebar
-$menuText:#ffffff;
+$menuText:#bfcbd9;
 $menuActiveText:#409EFF;
 $subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
 
-$menuBg: transparent;
-$menuHover:#ffffff;
-
-
+$menuBg: #304156;
+$menuHover:#263445;
 
 $subMenuBg:#1f2d3d;
 $subMenuHover:#001528;

@@ -2,7 +2,7 @@
   <div class="salaryApproval">
     <div class="contLeft">
       <div class="topTit">
-        <img src="@/assets/common/img.jpeg" alt>
+        <img v-imagerror="defaultImg" :src="staffPhoto" alt>
         <div class="info">
           <p class="name"><strong> {{ information.user.fullName }} </strong></p>
           <p>{{ information.user.department }} | {{ information.user.post }}</p>
@@ -36,6 +36,7 @@
 
 <script>
 import { getInformation, getReviewHistory } from '@/api/approvals'
+import { getUserDetailById } from '@/api/user'
 
 export default {
   name: 'UsersTableIndex',
@@ -43,16 +44,24 @@ export default {
   data() {
     return {
       information: {},
-      reviewHistoryDataes: {}
+      reviewHistoryDataes: {},
+      defaultImg: require('@/assets/common/head.jpg'),
+      userId: this.$route.params.userId,
+      staffPhoto: null
     }
   },
   created() {
     this.getInformation()
+    this.getUserPhoto()
     this.getReviewHistory()
   },
   methods: {
     async getInformation() {
       this.information = await getInformation({ id: 1 })
+    },
+    async getUserPhoto() {
+      const userInfo = await getUserDetailById(this.userId)
+      this.staffPhoto = userInfo.staffPhoto
     },
     async  getReviewHistory(id) {
       const { data } = await getReviewHistory({ id: 1 })

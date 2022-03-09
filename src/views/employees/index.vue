@@ -8,7 +8,7 @@
         </template>
         <!-- 右侧显示按钮 excel导入 excel导出 新增员工 -->
         <template v-slot:after>
-          <el-button size="small" type="success" @click="$router.push('/import')">excel导入</el-button>
+          <el-button size="small" type="success" @click="$router.push(`/import?name=员工`)">excel导入</el-button>
           <el-button size="small" type="danger" @click="exportData">excel导出</el-button>
           <el-button size="small" type="primary" :disabled="!checkPermission('POINT-USER-ADD')" @click="showDialog = true">新增员工</el-button>
         </template>
@@ -21,7 +21,7 @@
           <!-- 插槽 -->
           <template v-slot="{ row }">
             <img
-              v-imagerror="require('@/assets/common/bigUserHeader.png')"
+              v-imagerror="require('@/assets/common/head.jpg')"
               :src="row.staffPhoto"
               alt=""
               style="border-radius: 50%; width: 100px; height: 100px; padding: 10px"

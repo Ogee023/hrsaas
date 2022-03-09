@@ -9,11 +9,11 @@
       <el-form-item label="部门编码" prop="code">
         <el-input v-model="formData.code" style="width: 80%" placeholder="1-50个字符" />
       </el-form-item>
-      <el-form-item label="部门负责人" prop="manager">
+      <el-form-item label="部门负责人" prop="managerId">
         <!-- native修饰符可以找到原生元素的事件 -->
-        <el-select v-model="formData.manager" style="width: 80%" placeholder="请选择" @focus="getEmployeeSimple">
+        <el-select v-model="formData.managerId" style="width: 80%" placeholder="请选择" @change="onSelect">
           <!-- 遍历选项 -->
-          <el-option v-for="item in peoples" :key="item.id" :label="item.username" :value="item.username" />
+          <el-option v-for="item in peoples" :key="item.id" :label="item.username" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
@@ -27,7 +27,7 @@
       </el-form-item>
     </el-form>
     <!-- 确定和取消 -->
-    <el-row slot="footer" type="flex" justify="center">
+    <el-row slot="footer" type="flex" justify="end">
       <el-col :span="6">
         <el-button size="small" @click="btnCancel">取消</el-button>
         <el-button type="primary" size="small" @click="btnOK">确定</el-button>
@@ -90,6 +90,7 @@ export default {
         name: '',
         code: '',
         manager: '',
+        managerId: '',
         introduce: ''
       },
       // 校验规则
@@ -112,6 +113,9 @@ export default {
       return this.formData.id ? '编辑部门' : '新增子部门'
     }
   },
+  created() {
+    this.getEmployeeSimple()
+  },
   methods: {
     async getEmployeeSimple() {
       this.peoples = await getEmployeeSimple()
@@ -121,6 +125,13 @@ export default {
       this.formData = await getDepartDetail(id)
       // 因为我们是父组件调用子组件的方法，先设置node直接调方法
       // props传值是异步的
+    },
+    onSelect(value) {
+      this.peoples.forEach((item) => {
+        if (item.id === value) {
+          this.formData.manager = item.username
+        }
+      })
     },
     btnOK() {
       // 手动校验表单
@@ -149,6 +160,7 @@ export default {
         name: '',
         code: '',
         manager: '',
+        managerId: '',
         introduce: ''
       }
       // 关闭弹层

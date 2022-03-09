@@ -13,7 +13,7 @@ export default {
       name: 'usersApprovals',
       hidden: true,
       meta: {
-        title: '用户'
+        title: '用户审批'
       }
     },
     {

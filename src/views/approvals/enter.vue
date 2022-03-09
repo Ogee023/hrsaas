@@ -2,7 +2,7 @@
   <div class="enterApproval">
     <div class="contLeft">
       <div class="topTit">
-        <img src="@/assets/common/img.jpeg" alt="">
+        <img v-imagerror="defaultImg" :src="staffPhoto" alt>
         <div class="info">
           <p class="name"><strong> {{ information.user.fullName }} </strong></p>
           <p><span>学历：{{ information.user.academic }}</span>  毕业院校： {{ information.user.college }}</p>
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { information, reviewHistory } from '@/api/approvals'
+import { getInformation, getReviewHistory } from '@/api/approvals'
+import { getUserDetailById } from '@/api/user'
 
 export default {
   name: 'UsersTableIndex',
@@ -43,20 +44,28 @@ export default {
   data() {
     return {
       information: {},
-      reviewHistoryDataes: {}
+      reviewHistoryDataes: {},
+      defaultImg: require('@/assets/common/head.jpg'),
+      userId: this.$route.params.userId,
+      staffPhoto: null
     }
   },
   created() {
     this.getInformation()
+    this.getUserPhoto()
   },
   methods: {
     async getInformation() {
-      const { data } = await information({ id: 1 })
+      const { data } = await getInformation({ id: 1 })
       this.getReviewHistory()
       this.information = data
     },
+    async getUserPhoto() {
+      const userInfo = await getUserDetailById(this.userId)
+      this.staffPhoto = userInfo.staffPhoto
+    },
     async  getReviewHistory(id) {
-      const { data } = await reviewHistory({ id: 1 })
+      const { data } = await getReviewHistory({ id: 1 })
       this.reviewHistoryDataes = data
     }
   }

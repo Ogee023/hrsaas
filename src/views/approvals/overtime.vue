@@ -1,8 +1,9 @@
 <template>
   <div class="quitApproval">
     <div class="contLeft">
+      <h2>{{ information.username }}申请加班</h2>
       <div class="topTit">
-        <img src="@/assets/common/img.jpeg" alt>
+        <img v-imagerror="defaultImg" :src="staffPhoto" alt>
         <div class="info">
           <p class="name">
             <strong>{{ information.username }}</strong>
@@ -62,6 +63,7 @@
 
 <script>
 import { getApprovalsDetail, getApprovalsTaskDetail, downImg } from '@/api/approvals'
+import { getUserDetailById } from '@/api/user'
 export default {
   name: 'UsersTableIndex',
   data() {
@@ -72,17 +74,25 @@ export default {
         data: {}
       },
       taskInstanceOutList: [],
-      imgs: ''
+      imgs: '',
+      defaultImg: require('@/assets/common/head.jpg'),
+      userId: this.$route.params.userId,
+      staffPhoto: null
     }
   },
   created() {
     this.getApprovalsDetail()
+    this.getUserPhoto()
     this.getApprovalsTaskDetail()
   },
   methods: {
     async getApprovalsDetail() {
       this.information = await getApprovalsDetail(this.approvalId)
       this.information.data = JSON.parse(this.information.procData)
+    },
+    async getUserPhoto() {
+      const userInfo = await getUserDetailById(this.userId)
+      this.staffPhoto = userInfo.staffPhoto
     },
     async getApprovalsTaskDetail() {
       this.taskInstanceOutList = await getApprovalsTaskDetail(this.approvalId)

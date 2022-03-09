@@ -46,6 +46,7 @@ export default {
       yearList: [], // 遍历的年的数组
       currentYear: null, // 当前年份
       currentMonth: null, // 当前月份
+      currentDay: null, // 当前日
       currentDate: null // 当前时间
     }
   },
@@ -53,10 +54,12 @@ export default {
     // 获取当前的年份
     this.currentYear = this.startDate.getFullYear() // 得到当前的年份
     this.currentMonth = this.startDate.getMonth() + 1 // 得到当前的年份
+    this.currentDay = this.startDate.getDate() // 得到当前的年份
     // 快速生成数组的方法
     this.yearList = Array.from(Array(11), (v, i) => this.currentYear + i - 5)
     // 钩子函数执行完成之后
-    this.dateChange() //
+    // this.dateChange() //
+    this.currentDate = new Date(`${this.currentYear}-${this.currentMonth}-${this.currentDay}`)
   },
   methods: {
     dateChange() {
@@ -71,7 +74,7 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style scoped>
  /deep/ .el-calendar-day {
   height:  auto;
  }

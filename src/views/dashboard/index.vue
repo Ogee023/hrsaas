@@ -9,7 +9,7 @@
             <img v-imagerror="defaultImg" :src="staffPhoto">
           </div>
           <div class="headInfoTip">
-            <p class="firstChild">早安，{{ name }}，祝你开心每一天！</p>
+            <p class="firstChild">Hello，{{ name }}，祝您开心每一天！</p>
             <!-- 辅助函数 -->
             <p class="lastChild">{{ name }} | {{ userInfo.company }} - {{ userInfo.departmentName }}</p>
           </div>
@@ -37,7 +37,7 @@
               <ul class="noticeList">
                 <li>
                   <div class="item">
-                    <img src="@/assets/common/img.jpeg" alt="">
+                    <img src="@/assets/common/head.jpg" alt="">
                     <div>
                       <p><span class="col">朱继柳</span> 发布了 第1期“传智大讲堂”互动讨论获奖名单公布</p>
                       <p>2018-07-21 15:21:38</p>
@@ -46,7 +46,7 @@
                 </li>
                 <li>
                   <div class="item">
-                    <img src="@/assets/common/img.jpeg" alt="">
+                    <img src="@/assets/common/head.jpg" alt="">
                     <div>
                       <p><span class="col">朱继柳</span> 发布了 第2期“传智大讲堂”互动讨论获奖名单公布</p>
                       <p>2018-07-21 15:21:38</p>
@@ -55,7 +55,7 @@
                 </li>
                 <li>
                   <div class="item">
-                    <img src="@/assets/common/img.jpeg" alt="">
+                    <img src="@/assets/common/head.jpg" alt="">
                     <div>
                       <p><span class="col">朱继柳</span> 发布了 第3期“传智大讲堂”互动讨论获奖名单公布</p>
                       <p>2018-07-21 15:21:38</p>
@@ -74,10 +74,11 @@
             <span>流程申请</span>
           </div>
           <div class="sideNav">
-            <el-button class="sideBtn" @click="showDialog = true">加班离职</el-button>
-            <el-button class="sideBtn">请假调休</el-button>
-            <el-button class="sideBtn" @click="$router.push('/users/approvals')">审批列表</el-button>
+            <el-button class="sideBtn" @click="showDialogRest = true">请假</el-button>
+            <el-button class="sideBtn" @click="showDialogOverTime = true">加班</el-button>
+            <el-button class="sideBtn" @click="showDialogLeave = true">离职</el-button>
             <el-button class="sideBtn" @click="$router.push('/users/info')">我的信息</el-button>
+            <el-button class="sideBtn" @click="$router.push('/users/approvals')">审批列表</el-button>
           </div>
         </el-card>
 
@@ -120,22 +121,82 @@
       </el-col>
     </el-row>
     <!-- 离职弹层 -->
-    <el-dialog :visible="showDialog" title="离职申请" @close="btnCancel">
-      <el-form ref="ruleForm" label-width="120px" :model="ruleForm" :rules="rules">
+    <el-dialog :visible="showDialogLeave" title="离职申请" @close="btnCancelLeave">
+      <el-form ref="ruleFormLeave" label-width="120px" :model="ruleFormLeave" :rules="rulesLeave">
         <el-form-item label="期望离职时间" prop="exceptTime">
           <!-- 离职时间 返回的是字符串 -->
-          <el-date-picker v-model="ruleForm.exceptTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" />
+          <el-date-picker v-model="ruleFormLeave.exceptTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" style="width: 80%" placeholder="请选择日期" />
         </el-form-item>
         <!-- 放置输入框 -->
         <el-form-item label="离职原因" prop="reason">
-          <el-input v-model="ruleForm.reason" type="textarea" :rows="3" style="width: 70%" />
+          <el-input v-model="ruleFormLeave.reason" type="textarea" :rows="3" style="width: 80%" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <!-- 确定取消 -->
-      <el-row slot="footer" type="flex" justify="center">
+      <el-row slot="footer" type="flex" justify="end">
         <el-col :span="6">
-          <el-button size="small" type="primary" @click="btnOK">确定</el-button>
-          <el-button size="small" @click="btnCancel">取消</el-button>
+          <el-button size="small" type="primary" @click="btnOKLeave">确定</el-button>
+          <el-button size="small" @click="btnCancelLeave">取消</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <!-- 加班弹层 -->
+    <el-dialog :visible="showDialogOverTime" title="加班申请" @close="btnCancelOverTime">
+      <el-form ref="ruleFormOverTime" label-width="120px" :model="ruleFormOverTime" :rules="rulesOverTime">
+        <el-form-item label="补偿方式">
+          <span>调休</span>
+        </el-form-item>
+        <el-form-item label="加班开始时间" prop="start_time">
+          <el-date-picker v-model="ruleFormOverTime.start_time" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" style="width: 80%" placeholder="请选择日期" />
+        </el-form-item>
+        <el-form-item label="加班结束时间" prop="end_time">
+          <el-date-picker v-model="ruleFormOverTime.end_time" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" style="width: 80%" placeholder="请选择日期" />
+        </el-form-item>
+        <el-form-item label="申请原因" prop="reason">
+          <el-input v-model="ruleFormOverTime.reason" type="textarea" :rows="3" style="width: 80%" placeholder="请输入内容" />
+        </el-form-item>
+      </el-form>
+      <!-- 确定取消 -->
+      <el-row slot="footer" type="flex" justify="end">
+        <el-col :span="6">
+          <el-button size="small" type="primary" @click="btnOKOverTime">确定</el-button>
+          <el-button size="small" @click="btnCancelOverTime">取消</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <!-- 请假弹层 -->
+    <el-dialog :visible="showDialogRest" title="请假申请" @close="btnCancelRest">
+      <el-form ref="ruleFormRest" label-width="120px" :model="ruleFormRest" :rules="rulesRest">
+        <el-form-item label="申请类型" prop="holidayType">
+          <el-select v-model="ruleFormRest.holidayType" style="width: 80%">
+            <el-option label="请假" value="请假" />
+            <el-option label="调休" value="调休" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="申请单位">
+          <span>按天</span>
+        </el-form-item>
+        <el-form-item label="开始时间" prop="startTime">
+          <el-date-picker v-model="ruleFormRest.startTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 80%" />
+        </el-form-item>
+        <el-form-item label="结束时间" prop="endTime">
+          <el-date-picker v-model="ruleFormRest.endTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 80%" />
+        </el-form-item>
+        <el-form-item v-if="ruleFormRest.holidayType === '请假'" label="请假时长" prop="duration">
+          <el-input v-model="ruleFormRest.duration" style="width: 80%" disabled />
+        </el-form-item>
+        <el-form-item v-if="ruleFormRest.holidayType === '调休'" label="申请天数" prop="duration">
+          <el-input v-model="ruleFormRest.duration" style="width: 80%" disabled />
+        </el-form-item>
+        <el-form-item label="申请理由" prop="reason">
+          <el-input v-model="ruleFormRest.reason" type="textarea" placeholder="请输入内容" :rows="3" style="width: 80%" />
+        </el-form-item>
+      </el-form>
+      <!-- 确定取消 -->
+      <el-row slot="footer" type="flex" justify="end">
+        <el-col :span="6">
+          <el-button size="small" type="primary" @click="btnOKRest">确定</el-button>
+          <el-button size="small" @click="btnCancelRest">取消</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -157,17 +218,48 @@ export default {
   data() {
     return {
       defaultImg: require('@/assets/common/head.jpg'),
-      showDialog: false,
+      showDialogLeave: false,
+      showDialogOverTime: false,
+      showDialogRest: false,
       // 离职表单
-      ruleForm: {
+      ruleFormLeave: {
         exceptTime: '', // 离职时间
         reason: '',
         processKey: 'process_dimission', // 特定的审批
         processName: '离职'
       },
-      rules: {
+      rulesLeave: {
         exceptTime: [{ trigger: 'blur', required: true, message: '离职时间不能为空' }],
         reason: [{ trigger: 'blur', required: true, message: '离职原因不能为空' }]
+      },
+      // 加班表单
+      ruleFormOverTime: {
+        start_time: '',
+        end_time: '',
+        reason: '',
+        processKey: 'process_overtime', // 特定的审批
+        processName: '加班'
+      },
+      rulesOverTime: {
+        start_time: [{ trigger: 'blur', required: true, message: '加班开始时间不能为空' }],
+        end_time: [{ trigger: 'blur', required: true, message: '加班结束时间不能为空' }],
+        reason: [{ trigger: 'blur', required: true, message: '申请原因不能为空' }]
+      },
+      // 请假表单
+      ruleFormRest: {
+        applyUnit: '按天',
+        holidayType: '请假',
+        duration: 0,
+        startTime: '',
+        endTime: '',
+        reason: '',
+        processKey: 'process_leave', // 特定的审批
+        processName: '请假'
+      },
+      rulesRest: {
+        startTime: [{ trigger: 'blur', required: true, message: '加班开始时间不能为空' }],
+        endTime: [{ trigger: 'blur', required: true, message: '加班结束时间不能为空' }],
+        reason: [{ trigger: 'blur', required: true, message: '申请原因不能为空' }]
       }
     }
   },
@@ -175,28 +267,85 @@ export default {
     ...mapGetters([
       'name', 'staffPhoto'
     ]),
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    computeDuration() {
+      let duration = 0
+      if (this.ruleFormRest.startTime && this.ruleFormRest.endTime) {
+        const durationStamp = (new Date(this.ruleFormRest.endTime)).valueOf() - (new Date(this.ruleFormRest.startTime)).valueOf()
+        const fourHours = 1000 * 60 * 60 * 4
+        const total = Math.floor(durationStamp / fourHours)
+        duration = Math.floor(total / 2) + (total % 2) * 0.5
+      }
+      return duration
+    }
   },
   methods: {
-    btnOK() {
-      this.$refs.ruleForm.validate(async validate => {
+    btnOKLeave() {
+      this.$refs.ruleFormLeave.validate(async validate => {
         if (validate) {
-          const data = { ...this.ruleForm, userId: this.userInfo.userId, username: this.userInfo.username }
+          const data = { ...this.ruleFormLeave, userId: this.userInfo.userId, username: this.userInfo.username }
           await startProcess(data)
           this.$message.success('离职申请提交成功')
-          this.showDialog = false
+          this.showDialogLeave = false
         }
       })
     },
-    btnCancel() {
-      this.ruleForm = {
+    btnCancelLeave() {
+      this.ruleFormLeave = {
         exceptTime: '',
         reason: '',
         processKey: 'process_dimission', // 特定的审批
         processName: '离职'
       }
-      this.$refs.ruleForm.resetFields()
-      this.showDialog = false
+      this.$refs.ruleFormLeave.resetFields()
+      this.showDialogLeave = false
+    },
+    btnOKOverTime() {
+      this.$refs.ruleFormOverTime.validate(async validate => {
+        if (validate) {
+          const data = { ...this.ruleFormOverTime, userId: this.userInfo.userId, username: this.userInfo.username }
+          await startProcess(data)
+          this.$message.success('加班申请提交成功')
+          this.showDialogOverTime = false
+        }
+      })
+    },
+    btnCancelOverTime() {
+      this.ruleFormOverTime = {
+        start_time: '',
+        end_time: '',
+        reason: '',
+        processKey: 'process_overtime', // 特定的审批
+        processName: '加班'
+      }
+      this.$refs.ruleFormOverTime.resetFields()
+      this.showDialogOverTime = false
+    },
+    btnOKRest() {
+      this.ruleFormRest.duration = this.computeDuration
+      // console.log(this.ruleFormRest)
+      this.$refs.ruleFormRest.validate(async validate => {
+        if (validate) {
+          const data = { ...this.ruleFormRest, userId: this.userInfo.userId, username: this.userInfo.username }
+          await startProcess(data)
+          this.$message.success('请假申请提交成功')
+          this.showDialogRest = false
+        }
+      })
+    },
+    btnCancelRest() {
+      this.ruleFormRest = {
+        applyUnit: '按天',
+        holidayType: '请假',
+        duration: 0,
+        startTime: '',
+        endTime: '',
+        reason: '',
+        processKey: 'process_leave', // 特定的审批
+        processName: '请假'
+      }
+      this.$refs.ruleFormRest.resetFields()
+      this.showDialogRest = false
     }
   }
 

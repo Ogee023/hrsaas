@@ -1,7 +1,7 @@
 <template>
   <!-- 因为要布局，所以变成块元素 -->
   <div>
-    <svg-icon icon-class="fullscreen" style="color:#fff; width: 20px; height: 20px" @click="changeScreen" />
+    <svg-icon icon-class="fullscreen" style="width: 20px; height: 20px" @click="changeScreen" />
   </div>
 </template>
 

@@ -15,10 +15,10 @@ import Components from './components'
 
 import * as directives from '@/directives'
 import * as filters from '@/filters'
-import i18n from '@/lang'
 import CheckPermission from '@/mixin/checkPermission'
 import '@/icons' // icon
 import '@/permission' // permission control
+import './utils/error-log' // error log
 
 /**
  * If you don't want to use mock-server
@@ -29,15 +29,7 @@ import '@/permission' // permission control
  * please remove it before going online ! ! !
  */
 
-// set ElementUI lang to EN
-// Vue.use(ElementUI, { locale })
-// 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI, {
-  // element本身支持i18n
-  // 此时i18n就会根据当前的locale属性去寻找对应的显示内容
-  i18n: (key, value) => i18n.t(key) // t方法 会去对应的语言包寻找对应的内容
-  // 改变locale的值，就可以改变对应的当前语言
-})
+Vue.use(ElementUI)
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key]) // 注册自定义指令
 })
@@ -57,6 +49,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  i18n,
   render: h => h(App)
 })

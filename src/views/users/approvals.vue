@@ -19,6 +19,9 @@
               :value="item.key"
               @change="changeSelectParams"
             >{{ item.name }}</el-radio>
+            <el-radio label="" value="" @change="changeSelectParams">
+              所有
+            </el-radio>
           </el-radio-group>
         </div>
         <div v-if="tagName != 'approvals'">
@@ -68,10 +71,10 @@
                 <em class="adopt" />审批通过
               </span>
               <span v-if="scope.row.processState==='3'" class="rovalsState">
-                <em class="reject" />审批不通过
+                <em class="reject" />审批驳回
               </span>
               <span v-if="scope.row.processState==='4'" class="rovalsState">
-                <em class="revoke" />撤销
+                <em class="revoke" />已撤销
               </span>
             </template>
           </el-table-column>
@@ -89,6 +92,7 @@
                 v-show="(tagName == 'copy' || tagName == 'approvals')&&(scope.row.processState==='1')"
                 size="mini"
                 type="text"
+                :disabled="!scope.row.procCurrNodeUserId.includes(userId)"
                 @click="clickPass('2',scope.row.processId)"
               >通过</el-button>
               <!--  && item.row.currentApproverId == userId -->
@@ -96,12 +100,13 @@
                 v-show="(tagName == 'copy' || tagName == 'approvals')&&(scope.row.processState==='1')"
                 size="mini"
                 type="text"
+                :disabled="!scope.row.procCurrNodeUserId.includes(userId)"
                 @click="clickPass('3',scope.row.processId)"
               >驳回</el-button>
               <el-button
                 size="mini"
                 type="text"
-                @click="clickDetail(scope.row.processId,scope.row.processName)"
+                @click="clickDetail(scope.row.processId,scope.row.processName, scope.row.userId)"
               >查看</el-button>
               <!-- <el-button size="mini" type="danger">打印</el-button> -->
             </template>
@@ -127,6 +132,7 @@
         ref="quit"
         :selected-id="selectedId"
         :tab-lab="tagName"
+        :apply-user-id="applyUserId"
         @closeDialog="closeDialog"
       />
       <!-- <Examine v-show="seeState == 'examine'" /> -->
@@ -135,6 +141,7 @@
         ref="leave"
         :selected-id="selectedId"
         :tab-lab="tagName"
+        :apply-user-id="applyUserId"
         @closeDialog="closeDialog"
       />
       <Overtime
@@ -142,6 +149,7 @@
         ref="overtime"
         :selected-id="selectedId"
         :tab-lab="tagName"
+        :apply-user-id="applyUserId"
         @closeDialog="closeDialog"
       />
     <!-- <Employment v-show="seeState == 'employment'" /> -->
@@ -212,7 +220,8 @@ export default {
         handleOpinion: '',
         processId: '',
         handleType: ''
-      }
+      },
+      applyUserId: '' // 申请人的id
     }
   },
   computed: {
@@ -312,7 +321,8 @@ export default {
           this.rejectProcess(id)
         })
     },
-    clickDetail(id, approvalType) {
+    clickDetail(id, approvalType, userId) {
+      this.applyUserId = userId
       this.centerDialogVisible = true
       this.topLabel = approvalType
       switch (approvalType) {
@@ -322,7 +332,9 @@ export default {
         case '离职':
           this.seeState = 'quit'
           this.selectedId = id
-          this.$refs.quit.updateData()
+          this.$nextTick(() => {
+            this.$refs.quit.updateData()
+          })
           break
         case '审核':
           this.seeState = 'examine'
@@ -330,7 +342,9 @@ export default {
         case '加班':
           this.seeState = 'overtime'
           this.selectedId = id
-          this.$refs.overtime.updateData()
+          this.$nextTick(() => {
+            this.$refs.overtime.updateData()
+          })
           break
         case '录用':
           this.seeState = 'employment'
@@ -338,12 +352,16 @@ export default {
         case '请假':
           this.seeState = 'leave'
           this.selectedId = id
-          this.$refs.leave.updateData()
+          this.$nextTick(() => {
+            this.$refs.leave.updateData()
+          })
           break
         case '调休':
           this.seeState = 'leave'
           this.selectedId = id
-          this.$refs.leave.updateData()
+          this.$nextTick(() => {
+            this.$refs.leave.updateData()
+          })
           break
         default:
           this.seeState = 'becomeARegularWorker'

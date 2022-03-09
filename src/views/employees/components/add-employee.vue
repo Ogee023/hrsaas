@@ -30,7 +30,7 @@
     </el-form>
     <!-- footer插槽 -->
     <template v-slot:footer>
-      <el-row type="flex" justify="center">
+      <el-row type="flex" justify="end">
         <el-col :span="6">
           <el-button size="small" @click="btnCancel">取消</el-button>
           <el-button type="primary" size="small" @click="btnOK">确定</el-button>
@@ -64,7 +64,8 @@ export default {
         workNumber: '',
         departmentName: '',
         timeOfEntry: '',
-        correctionTime: ''
+        correctionTime: '',
+        departmentId: ''
       },
       rules: {
         username: [{ required: true, message: '用户姓名不能为空', trigger: 'blur' },
@@ -95,6 +96,7 @@ export default {
     },
     selectNode(node) {
       this.formData.departmentName = node.name
+      this.formData.departmentId = node.id
       this.showTree = false
     },
     async btnOK() {
@@ -119,7 +121,8 @@ export default {
         workNumber: '',
         departmentName: '',
         timeOfEntry: '',
-        correctionTime: ''
+        correctionTime: '',
+        departmentId: ''
       }
       this.$refs.addEmployee.resetFields() // 移除之前的校验
       this.$emit('update:showDialog', false)

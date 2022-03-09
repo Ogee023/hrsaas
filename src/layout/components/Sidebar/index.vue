@@ -41,7 +41,7 @@ export default {
       if (meta.activeMenu) {
         return meta.activeMenu
       }
-      return path
+      return '/' + path.split('/')[1]
     },
     showLogo() {
       return this.$store.state.settings.sidebarLogo

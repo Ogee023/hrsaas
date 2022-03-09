@@ -76,7 +76,7 @@
         </el-form-item>
       </el-form>
       <!-- 放置footer插槽 -->
-      <el-row type="flex" justify="center">
+      <el-row type="flex" justify="end">
         <el-col :span="8">
           <el-button size="small" @click="btnCancel">取消</el-button>
           <el-button type="primary" size="small" @click="btnOK">确定</el-button>
@@ -100,7 +100,7 @@
         node-key="id"
       />
       <!-- 确定 取消 -->
-      <el-row slot="footer" type="flex" justify="center">
+      <el-row slot="footer" type="flex" justify="end">
         <el-col :span="6">
           <el-button type="primary" size="small" @click="btnPermOK">确定</el-button>
           <el-button size="small" @click="btnPermCancel">取消</el-button>

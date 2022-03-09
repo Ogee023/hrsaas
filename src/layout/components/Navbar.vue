@@ -1,15 +1,11 @@
 <template>
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <div class="app-breadcrumb">
-      江苏传智播客教育科技股份有限公司
-      <span class="breadBtn">体验版</span>
-    </div>
-    <!-- <breadcrumb class="breadcrumb-container" /> -->
+    <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <!-- 放置多语言插件 -->
-      <lang-select class="right-menu-item" />
+      <!-- 放置error -->
+      <error-log class="errLog-container right-menu-item hover-effect" />
       <!-- 放置全屏插件 -->
       <screen-full class="right-menu-item" />
       <!-- 放置切换主题组件 -->
@@ -40,11 +36,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import ErrorLog from '@/components/ErrorLog'
 
 export default {
   components: {
-    Hamburger
+    Breadcrumb,
+    Hamburger,
+    ErrorLog
   },
   data() {
     return {
@@ -64,6 +64,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout') // 写不写await登出方法都是同步的
+      await this.$store.dispatch('tagsView/delAllViews') // 写不写await登出方法都是同步的
       this.$router.push(`/login`) // 直接跳登录
     }
   }
@@ -75,7 +76,7 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background-image: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
+  background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
@@ -91,27 +92,13 @@ export default {
     }
   }
 
-  .app-breadcrumb {
-    display: inline-block;
-    font-size: 18px;
-    line-height: 50px;
-    margin-left: 10px;
-    color: #ffffff;
-    cursor: text;
-    .breadBtn {
-      background: #84a9fe;
-      font-size: 14px;
-      padding: 0 10px;
-      display: inline-block;
-      height: 30px;
-      line-height: 30px;
-      border-radius: 10px;
-      margin-left: 15px;
-    }
-  }
-
   .breadcrumb-container {
     float: left;
+  }
+
+  .errLog-container {
+    display: inline-block;
+    vertical-align: top;
   }
 
   .right-menu {
@@ -124,7 +111,7 @@ export default {
     }
 
    .name {
-      color: #fff;
+      color: #000;
       vertical-align: middle;
       margin-left:5px;
     }
@@ -168,9 +155,8 @@ export default {
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 18px;
           font-size: 12px;
-          color: #fff;
         }
       }
     }

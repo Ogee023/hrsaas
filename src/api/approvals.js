@@ -107,9 +107,13 @@ export function approvalsPass(data) {
 }
 export function applyDimission(data) {
   return request({
-    url: '/user/process_dimission/startProcess',
+    url: '/user/process/startProcess',
     method: 'post',
-    data
+    data: {
+      processKey: 'process_dimission',
+      processName: '离职',
+      ...data
+    }
   })
 }
 export function applyOvertime(data) {

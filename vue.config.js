@@ -67,6 +67,13 @@ module.exports = {
         target: 'http://ihrm-java.itheima.net/', // 要代理的服务器地址 这里不用写api
         changeOrigin: true // 是否跨域
       }
+      // '/api': {
+      //   target: 'http://localhost:9091/', // 要代理的服务器地址 这里不用写api
+      //   changeOrigin: true, // 是否跨域
+      //   pathRewrite: {
+      //     '^/api': ''
+      //   }
+      // }
     }
   },
   configureWebpack: {
