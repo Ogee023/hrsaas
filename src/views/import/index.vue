@@ -33,7 +33,7 @@
 <script>
 import { minHeight } from '@/filters/index'
 import importCompon from '@/components/Import/index'
-var _this = null
+// var _this = null
 export default {
   name: 'RefortList',
   components: {
@@ -52,8 +52,8 @@ export default {
   // 挂载结束
   mounted: function() {},
   // 创建完毕状态
-  created: function() {
-    _this = this
+  created() {
+    // _this = this
     this.boxHeight = minHeight() // 右边内容高度
   },
   // 组件更新

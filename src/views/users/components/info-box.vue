@@ -1,19 +1,19 @@
 <template>
   <div class="infoBox">
     <div class="logo">
-      <img v-imagerror="defaultImg" :src="staffPhoto" alt>
+      <img v-imagerror="defaultImg" :src="userInfo.staffPhoto" alt>
     </div>
     <div class="info">
       <p>
-        <span class="name">{{ ruleForm.username }}</span>
+        <span class="name">{{ userInfo.username }}</span>
       </p>
       <p>
         <span>部门：</span>
-        {{ ruleForm.departmentName }}
+        {{ userInfo.departmentName }}
       </p>
       <p>
         <span>入职时间：</span>
-        {{ ruleForm.timeOfEntry | formatDate }}
+        {{ userInfo.timeOfEntry | formatDate }}
       </p>
     </div>
   </div>
@@ -24,32 +24,26 @@ import { getUserDetailById } from '@/api/user'
 export default {
   name: 'InfoBox',
   props: {
-    ruleForm: {
-      type: Object,
-      default: () => {}
-    },
     userId: {
-      type: String,
-      default: ''
-    },
-    applyUserId: {
       type: String,
       default: ''
     }
   },
   data() {
     return {
-      staffPhoto: null,
-      defaultImg: require('@/assets/common/head.jpg')
+      defaultImg: require('@/assets/common/head.jpg'),
+      userInfo: {}
     }
   },
   created() {
     this.getUserPhoto()
   },
+  updated() {
+    this.getUserPhoto()
+  },
   methods: {
     async getUserPhoto() {
-      const userInfo = await getUserDetailById(this.applyUserId)
-      this.staffPhoto = userInfo.staffPhoto
+      this.userInfo = await getUserDetailById(this.userId)
     }
   }
 }

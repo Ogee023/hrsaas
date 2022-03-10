@@ -50,7 +50,16 @@ import infoBox from '@/views/users/components/info-box.vue'
 export default {
   name: 'UsersTableIndex',
   components: { infoBox },
-  props: ['userSalary', 'userId'],
+  props: {
+    userSalary: {
+      type: Object,
+      default: () => {}
+    },
+    userId: {
+      type: String,
+      default: ''
+    }
+  },
 
   data() {
     return {

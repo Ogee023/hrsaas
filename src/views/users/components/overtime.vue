@@ -1,6 +1,6 @@
 <template>
   <div v-if="ruleForm.data" class="AdjustThePost">
-    <info-box :rule-form="ruleForm" :apply-user-id="applyUserId" />
+    <info-box :user-id="applyUserId" />
     <div>
       <el-form
         ref="ruleForm"

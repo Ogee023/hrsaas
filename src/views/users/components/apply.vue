@@ -84,7 +84,12 @@ import { startProcess } from '@/api/approvals'
 import commonApi from '@/api/constant/user'
 export default {
   name: 'UsersTableIndex',
-  props: ['dialogVisible'],
+  props: {
+    dialogVisible: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       dialogImageUrl: '',

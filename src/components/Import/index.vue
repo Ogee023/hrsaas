@@ -58,7 +58,13 @@ import { importFile } from '@/filters/index'
 import { getToken } from '@/utils/auth'
 export default {
   name: 'Import',
-  props: ['baseData'],
+  // props: ['baseData'],
+  props: {
+    baseData: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
       resume: '',

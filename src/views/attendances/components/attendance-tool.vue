@@ -38,7 +38,7 @@ export default {
   components: {
     employeesSet
   },
-  props: ['monthOfReport', 'formData', 'attendInfo', 'yearMonth'],
+  // props: ['monthOfReport', 'formData', 'attendInfo', 'yearMonth'],
   data() {
     return {
       employeesSet: 'employeesSet',

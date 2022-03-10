@@ -44,6 +44,7 @@ export default {
   // background: #2b2f3a;
   text-align: center;
   overflow: hidden;
+  -webkit-app-region: no-drag;
 
   & .sidebar-logo-link {
     height: 100%;

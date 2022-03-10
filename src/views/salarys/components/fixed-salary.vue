@@ -42,9 +42,12 @@ import { initSalary } from '@/api/salarys'
 
 export default {
   name: 'UsersTableIndex',
-  props: [
-    'userId'
-  ],
+  props: {
+    userId: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       labelPosition: 'left',

@@ -116,6 +116,7 @@ export default {
             // async标记的函数是promise对象
             // await下面的代码都是成功执行的代码
             this.$router.push('/')
+            window.electron.logined(true)
           } catch (error) {
             console.log(error)
           } finally {

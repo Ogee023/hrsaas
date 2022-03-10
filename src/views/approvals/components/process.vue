@@ -32,10 +32,10 @@
             <el-form-item label="执行人：" prop="formOfEmployment">
               <el-select v-model="item.user" class="filter-item" multiple style="width:300px;">
                 <el-option
-                  v-for="item in getEmploySimpleData"
-                  :key="item.id"
-                  :label="item.fullName"
-                  :value="item.id"
+                  v-for="item2 in getEmploySimpleData"
+                  :key="item2.id"
+                  :label="item2.fullName"
+                  :value="item2.id"
                 />
               </el-select>
             </el-form-item>
@@ -57,7 +57,7 @@ import { process } from '@/api/approvals'
 import commonApi from '@/api/constant/approvals'
 export default {
   name: 'Setting',
-  props: ['setData'],
+  // props: ['setData'],
   data() {
     return {
       dialogFormVisible: false,

@@ -30,6 +30,11 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <i class="el-icon-minus feature small" @click="onSmall" />
+      <i class="el-icon-plus feature" :class="isMax ? 'big2' : 'big1'" @click="onBig">
+        <!-- <img :src="big1" alt> -->
+      </i>
+      <i class="el-icon-close feature close" @click="onClose" />
     </div>
   </div>
 </template>
@@ -48,7 +53,8 @@ export default {
   },
   data() {
     return {
-      defaultImg: require('@/assets/common/head.jpg') // 防止打包后路径不对
+      defaultImg: require('@/assets/common/head.jpg'), // 防止打包后路径不对
+      isMax: false
     }
   },
   computed: {
@@ -58,6 +64,15 @@ export default {
       'staffPhoto'
     ])
   },
+  mounted() {
+    window.electron.listenMaximize((e, isMax1) => {
+      this.isMax = isMax1
+    })
+
+    window.electron.listenMinimize((e, isMax1) => {
+      this.isMax = isMax1
+    })
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -65,7 +80,21 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout') // 写不写await登出方法都是同步的
       await this.$store.dispatch('tagsView/delAllViews') // 写不写await登出方法都是同步的
+      window.electron.logined(false)
       this.$router.push(`/login`) // 直接跳登录
+    },
+    onSmall() {
+      window.electron.windowMinimize()
+    },
+    onClose() {
+      window.electron.windowClose()
+    },
+    onBig() {
+      if (this.isMax) {
+        window.electron.windowUnMaximize()
+      } else {
+        window.electron.windowMaximize()
+      }
     }
   }
 }
@@ -78,6 +107,7 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  -webkit-app-region: drag;
 
   .hamburger-container {
     line-height: 46px;
@@ -86,6 +116,7 @@ export default {
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
+    -webkit-app-region: no-drag;
 
     &:hover {
       background: rgba(0, 0, 0, .025)
@@ -94,17 +125,20 @@ export default {
 
   .breadcrumb-container {
     float: left;
+    -webkit-app-region: no-drag;
   }
 
   .errLog-container {
     display: inline-block;
     vertical-align: top;
+    -webkit-app-region: no-drag;
   }
 
   .right-menu {
     float: right;
     height: 100%;
     line-height: 50px;
+    -webkit-app-region: no-drag;
 
     &:focus {
       outline: none;
@@ -158,6 +192,41 @@ export default {
           top: 18px;
           font-size: 12px;
         }
+      }
+    }
+
+    .feature {
+      font-size: 20px;
+      text-align: center;
+      width: 45px;
+      line-height: 50px;
+    }
+
+    .small {
+      &:hover {
+        background: #e5e5e5;
+      }
+    }
+
+    .big1 {
+      color: transparent;
+      background: url('~@/assets/common/big1.svg');
+      &:hover {
+        background: #e5e5e5 url('~@/assets/common/big1.svg');
+      }
+    }
+
+    .big2 {
+      color: transparent;
+      background: url('~@/assets/common/big2.svg');
+      &:hover {
+        background: #e5e5e5 url('~@/assets/common/big2.svg');
+      }
+    }
+
+    .close {
+      &:hover {
+        background: #e81123;
       }
     }
   }

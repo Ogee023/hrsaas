@@ -1,7 +1,7 @@
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-scrollbar class="sidebarMenu" wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
@@ -55,3 +55,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.sidebarMenu {
+  -webkit-app-region: drag;
+}
+/deep/.el-scrollbar__view {
+  -webkit-app-region: no-drag;
+}
+</style>
